@@ -1,47 +1,41 @@
-import { StatusCodes } from 'http-status-codes'
-import { BlogRepository } from '@/api/blogs/blogRepository'
-import { ServiceResponse } from '@/common/models/serviceResponse'
-import { logger } from '@/server'
-import { BlogData, BlogsPages } from '@/common/types'
-import { CreateBlogValues } from './blogModel'
+import { BlogRepository } from "@/api/blogs/blogRepository";
+import { ServiceResponse } from "@/common/models/serviceResponse";
+import type { BlogData, BlogsPages } from "@/common/types";
+import { logger } from "@/server";
+import { StatusCodes } from "http-status-codes";
+import type { CreateBlogValues } from "./blogModel";
 
 export class BlogService {
-  private blogRepository: BlogRepository
+  private blogRepository: BlogRepository;
 
   constructor(repository: BlogRepository = new BlogRepository()) {
-    this.blogRepository = repository
+    this.blogRepository = repository;
   }
 
   // Retrieves all users from the database
-  async findAll(
-    cursor: string | undefined
-  ): Promise<ServiceResponse<BlogsPages | null>> {
+  async findAll(cursor: string | undefined): Promise<ServiceResponse<BlogsPages | null>> {
     try {
-      const blogs = await this.blogRepository.findAllAsync(cursor)
-      return ServiceResponse.success<BlogsPages>('Blogs found', blogs)
+      const blogs = await this.blogRepository.findAllAsync(cursor);
+      return ServiceResponse.success<BlogsPages>("Blogs found", blogs);
     } catch (ex) {
-      const errorMessage = `Error finding all users: $${(ex as Error).message}`
-      logger.error(errorMessage)
+      const errorMessage = `Error finding all users: $${(ex as Error).message}`;
+      logger.error(errorMessage);
       return ServiceResponse.failure(
-        'An error occurred while retrieving users.',
+        "An error occurred while retrieving users.",
         null,
-        StatusCodes.INTERNAL_SERVER_ERROR
-      )
+        StatusCodes.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
   async create(values: CreateBlogValues) {
     try {
-      const blog = await this.blogRepository.createAsync(values)
-      return ServiceResponse.success<BlogData>('Blog created', blog)
+      const blog = await this.blogRepository.createAsync(values);
+      return ServiceResponse.success<BlogData>("Blog created", blog);
     } catch (ex) {
-      const errorMessage = `Error finding all users: $${(ex as Error).message}`
-      logger.error(errorMessage)
-      return ServiceResponse.failure(
-        'An error occurred while creating blog.',
-        null,
-        StatusCodes.INTERNAL_SERVER_ERROR
-      )
+      const errorMessage = `Error finding all users: $${(ex as Error).message}`;
+      logger.error(errorMessage);
+      return ServiceResponse.failure("An error occurred while creating blog.", null, StatusCodes.INTERNAL_SERVER_ERROR);
     }
   }
 
@@ -61,4 +55,4 @@ export class BlogService {
   // }
 }
 
-export const blogService = new BlogService()
+export const blogService = new BlogService();

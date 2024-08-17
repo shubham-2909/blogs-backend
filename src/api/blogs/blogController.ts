@@ -1,20 +1,20 @@
-import type { Request, RequestHandler, Response } from 'express'
+import type { Request, RequestHandler, Response } from "express";
 
-import { blogService } from '@/api/blogs/blogService'
-import { handleServiceResponse } from '@/common/utils/httpHandlers'
+import { blogService } from "@/api/blogs/blogService";
+import { handleServiceResponse } from "@/common/utils/httpHandlers";
 
 class BlogController {
   public getBlogs: RequestHandler = async (_req: Request, _res: Response) => {
-    const cursor = _req.query.cursor as string | undefined
-    const serviceResponse = await blogService.findAll(cursor)
-    return handleServiceResponse(serviceResponse, _res)
-  }
+    const cursor = _req.query.cursor as string | undefined;
+    const serviceResponse = await blogService.findAll(cursor);
+    return handleServiceResponse(serviceResponse, _res);
+  };
 
   public createBlog: RequestHandler = async (_req: Request, _res: Response) => {
-    const values = _req.body
-    const serviceResponse = await blogService.create(values)
-    return handleServiceResponse(serviceResponse, _res)
-  }
+    const values = _req.body;
+    const serviceResponse = await blogService.create(values);
+    return handleServiceResponse(serviceResponse, _res);
+  };
 
   // public getUser: RequestHandler = async (req: Request, res: Response) => {
   //   const id = Number.parseInt(req.params.id as string, 10)
@@ -23,4 +23,4 @@ class BlogController {
   // }
 }
 
-export const blogController = new BlogController()
+export const blogController = new BlogController();
