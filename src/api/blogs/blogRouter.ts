@@ -1,11 +1,9 @@
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 import express, { type Router } from 'express'
 import { z } from 'zod'
-
 import { createApiResponse } from '@/api-docs/openAPIResponseBuilders'
-import { validateRequest } from '@/common/utils/httpHandlers'
 import { blogController } from './blogController'
-import { BlogSchema } from './blogModel'
+import { BlogSchema, GetBlogSchema } from './blogModel'
 
 export const blogRegistry = new OpenAPIRegistry()
 export const blogRouter: Router = express.Router()
@@ -16,11 +14,13 @@ blogRegistry.registerPath({
   method: 'get',
   path: '/blogs',
   tags: ['Blog'],
+  request: { query: GetBlogSchema.shape.query },
   responses: createApiResponse(z.array(BlogSchema), 'Success'),
 })
 
 blogRouter.get('/', blogController.getBlogs)
 
+blogRouter.post('/', blogController.createBlog)
 // register path for common blog
 // blogRegistry.registerPath({
 //   method: 'get',
